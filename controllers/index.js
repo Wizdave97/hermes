@@ -1,3 +1,6 @@
+const lib = require('../lib');
+const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
+
 module.exports = {
 
     postMessage(req, res) {
@@ -13,6 +16,21 @@ module.exports = {
             // will only ever contain one message, so we get index 0
             let webhook_event = entry.messaging[0];
             console.log(webhook_event);
+
+            //Gets sender PSID
+            let senderPsId = webhook_event.sender.id;
+            console.log('Sender ID: ' + senderPsId)
+
+            //Handle Webhook Event Types
+            if (webhook_event.message) {
+              lib.handleMessage(senderPsId, webhook_event.message);
+            }
+            else if (webhook_event.postback) {
+              lib.handlePostback(senderPsId, webhook_event.postback);
+            }
+            else if (webhook_event.attachments) {
+              let attachmentUrl = webhook_event.attachments[0].payload.url;
+            }
           });
       
           // Returns a '200 OK' response to all requests
