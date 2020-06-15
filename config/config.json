@@ -1,0 +1,27 @@
+{
+  "development": {
+    "username": "ecommerce-bot-db-user",
+    "password": "123.456",
+    "database": "ecommerce-bot-db",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "operatorsAliases": false
+  },
+  "test": {
+    "username": "root",
+    "password": null,
+    "database": "database_test",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "operatorsAliases": false
+  },
+  "production": {
+    "username": "tnrmvpqicqdqdz",
+    "password": "117293517f19669bd5882f54ddcd0c730be67c834fd1edf0e78402aa87fd8faa",
+    "database": "d7jhcdj4kqugpq",
+    "host": "ec2-18-213-176-229.compute-1.amazonaws.com",
+    "port": 5432,
+    "dialect": "postgres",
+    "operatorsAliases": false
+  }
+}
