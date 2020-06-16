@@ -2,7 +2,9 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
+var cors = require('cors');
 var logger = require('morgan');
+const multer = require('multer');
 require('dotenv').config();
 var indexRouter = require('./routes/index');
 
@@ -17,6 +19,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/webhook', indexRouter)
@@ -28,6 +31,11 @@ app.use(function(req, res, next) {
 
 // error handler
 app.use(function(err, req, res, next) {
+  if (err instanceof multer.MulterError)
+  {
+    res.redirect({ error: 'Product image is required and must be an png or jpeg or jpg file' });
+    return null;
+  }
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

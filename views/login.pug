@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  div(class=['w-full sm:w-64 md:w-5/12  h-full mx-auto flex flex-wrap items-center bg-transparent px-4'])
+    
+    div(class=['flex flex-wrap shadow-xl rounded-md bg-white p-4'])
+      h1(class=['w-full p-2 mb-2 text-md font-bold text-gray-800 text-center md:text-lg']) Admin Login
+      if error 
+        h2(class=['w-full p-2 mb-2 text-md font-bold text-red-800 text-center md:text-lg']) #{error}
+      form(method='POST' action="/webhook/login" class=['w-full flex flex-wrap items-center'] validate)
+        div(class=['w-full mb-2'])
+          label(for="email" class=['w-full text-sm font-semibold text-gray-700 text-left']) Username
+          input(type="email" name="email" id="email" required class=['w-full p-2 my-1 border-2 border-gray-100 hover:shadow-inner rounded-md'])
+        div(class=['w-full mb-2'])
+          label(for="password" class=['w-full text-sm font-semibold text-gray-700 text-left']) Password
+          input(type="password" name="password" required id="password" class=['w-full p-2 my-1 border-2 border-gray-100 hover:shadow-inner rounded-md'])
+        div(class=['w-full mb-2'])
+          button(type="submit" name="submit" id="submit" class=['w-full p-2 my-1 bg-indigo-500 text-white font-semibold hover:shadow-inner rounded-md']) Login

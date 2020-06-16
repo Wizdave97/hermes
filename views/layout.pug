@@ -1,7 +1,14 @@
 doctype html
-html
+html(class=['w-full h-full p-0 m-0'])
   head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
-  body
+    title Ecommerce Bot Admin | #{title}
+    link(rel='stylesheet', href='/stylesheets/tailwind.css')
+  body(class=['w-full h-full bg-gray-100 p-0 m-0'])
+    nav(class=['w-full h-16 bg-white flex flex-nowrap justify-around'])
+      if token
+        a(href="/webhook/product" class=['h-full p-2 text-sm md:text-md md:font-semibold text-green mx-2 hover:bg-gray-700']) Add Products
+        a(href="/webhook/categories" class=['h-full p-2 text-sm md:text-md md:font-semibold text-green mx-2 hover:bg-gray-700']) Add categories
+      else
+        a(href="/webhook/login" class=['h-full p-2 flex items-center justify-center text-sm md:text-md md:font-semibold text-green mx-2 hover:bg-gray-700']) 
+          span Login
     block content

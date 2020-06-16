@@ -1,6 +1,5 @@
 extends layout
 
 block content
-  h1= message
-  h2= error.status
-  pre #{error.stack}
+  h2(class=['h-2 p-2 text-sm text-red-600 font-semibold']) #{message}
+  h2(class=['h-2 p-2 text-lg text-green-600 font-semibold']) Please try reloading the page
