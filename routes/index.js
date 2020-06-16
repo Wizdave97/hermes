@@ -4,27 +4,27 @@ const { body } = require('express-validator');
 const path = require('path');
 var router = express.Router();
 const index = require('../controllers/index');
-const { checkAuth } = require('../lib/helpers');
+const { checkAuth, resizeImage } = require('../lib/helpers');
 
-const storage = multer.diskStorage({
-    destination: path.resolve(process.cwd(), 'public/images'),
-    filename(req, file, cb) {
-      try
-      {
-        if (file)
-        {
-          const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1E9)}.${file.mimetype.match(/(?:\/|\\)\w+$/)[0].replace(/[\\/]/, '')}`;
-          cb(null, `${file.fieldname}-${uniqueSuffix}`.trim());
-        }
-        else cb(new multer.MulterError(400, 'No file uploaded'));
-      }
-      catch (err)
-      {
-        cb(new multer.MulterError(400, 'file upload error'));
-      }
-    },
-  });
-  
+// const storage = multer.diskStorage({
+//     destination: path.resolve(process.cwd(), 'public/images'),
+//     filename(req, file, cb) {
+//       try
+//       {
+//         if (file)
+//         {
+//           const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1E9)}.${file.mimetype.match(/(?:\/|\\)\w+$/)[0].replace(/[\\/]/, '')}`;
+//           cb(null, `${file.fieldname}-${uniqueSuffix}`.trim());
+//         }
+//         else cb(new multer.MulterError(400, 'No file uploaded'));
+//       }
+//       catch (err)
+//       {
+//         cb(new multer.MulterError(400, 'file upload error'));
+//       }
+//     },
+//   });
+  const storage = multer.memoryStorage();
   const upload = multer({
     storage,
     fileFilter(req, file, cb) {
@@ -32,7 +32,6 @@ const storage = multer.diskStorage({
       {
         if (file)
         {
-          console.log(file)
           const mimetype = file.mimetype.match(/(?:\/|\\)\w+$/)[0].replace(/[\\/]/, '');
           if (['png', 'jpeg', 'jpg'].indexOf(mimetype.trim()) <= -1)
           {
@@ -71,7 +70,7 @@ router.post('/product', checkAuth, upload.single('img'), [
     body('product_name').isString().isLength({min: 3}).escape().trim(),
     body('price').isNumeric(),
     body('stock').isNumeric()
-], checkFile, index.addProduct);
+], checkFile, resizeImage, index.addProduct);
 router.get('/product', checkAuth, index.getAddProduct);
 router.get('/categories', checkAuth, function(req, res) {
     res.render('add_categories', {title: 'Product Categories'});

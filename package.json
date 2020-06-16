@@ -28,6 +28,7 @@
     "request": "^2.88.2",
     "sequelize": "^5.21.12",
     "sequelize-cli": "^5.5.1",
+    "sharp": "^0.25.4",
     "tailwindcss": "^1.4.6"
   }
 }
