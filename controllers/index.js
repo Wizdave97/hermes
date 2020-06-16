@@ -106,8 +106,7 @@ const controllers = {
     {
       const errors = validationResult(req);
       if(req.file && errors.isEmpty()){
-        const filePath = req.file.path.replace(new RegExp(`[\\${path.sep}]`, 'g'), '/').match(/images[/\w+-\d+.]+/g)[0];
-        const img_url = `https://sheltered-headland-16417.herokuapp.com/${filePath}`;
+        const img_url = req.file.cloudStoragePublicUrl
         models.Products.create({
           product_name: req.body.product_name,
           price: req.body.price,
