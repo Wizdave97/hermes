@@ -6,26 +6,8 @@ var router = express.Router();
 const index = require('../controllers/index');
 const { checkAuth, resizeImage } = require('../lib/helpers');
 
-// const storage = multer.diskStorage({
-//     destination: path.resolve(process.cwd(), 'public/images'),
-//     filename(req, file, cb) {
-//       try
-//       {
-//         if (file)
-//         {
-//           const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1E9)}.${file.mimetype.match(/(?:\/|\\)\w+$/)[0].replace(/[\\/]/, '')}`;
-//           cb(null, `${file.fieldname}-${uniqueSuffix}`.trim());
-//         }
-//         else cb(new multer.MulterError(400, 'No file uploaded'));
-//       }
-//       catch (err)
-//       {
-//         cb(new multer.MulterError(400, 'file upload error'));
-//       }
-//     },
-//   });
-  const storage = multer.memoryStorage();
-  const upload = multer({
+const storage = multer.memoryStorage();
+const upload = multer({
     storage,
     fileFilter(req, file, cb) {
       try
@@ -60,8 +42,7 @@ const { checkAuth, resizeImage } = require('../lib/helpers');
     next();
   }
 
-router.post('/', index.postMessage);
-router.get('/', index.getMessage);
+
 router.post('/categories', checkAuth,[
     body('categories').isString().isLength({min: 2}).escape().trim()
 ], index.postCategories);

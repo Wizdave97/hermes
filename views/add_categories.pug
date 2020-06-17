@@ -8,7 +8,7 @@ block content
         h2(class=['w-full p-2 mb-2 text-md font-bold text-red-800 text-center md:text-lg']) #{error}
       if success 
         h2(class=['w-full p-2 mb-2 text-md font-bold text-green-800 text-center md:text-lg']) #{success}
-      form(method='POST' action="/webhook/categories" class=['w-full flex flex-wrap items-center'] validate)
+      form(method='POST' action="/categories" class=['w-full flex flex-wrap items-center'] validate)
         div(class=['w-full mb-2'])
           label(for="categories" class=['w-full text-sm font-semibold text-gray-700 text-left']) Categories
           input(type="text" name="categories" id="categories" required class=['w-full p-2 my-1 border-2 border-gray-100 hover:shadow-inner rounded-md'])

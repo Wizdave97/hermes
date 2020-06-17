@@ -7,7 +7,8 @@ var logger = require('morgan');
 const multer = require('multer');
 require('dotenv').config();
 require('./lib/firebase_config');
-var indexRouter = require('./routes/index');
+const indexRouter = require('./routes/index');
+const webhookRouter = require('./routes/webhook');
 
 
 var app = express();
@@ -23,7 +24,9 @@ app.use(cookieParser());
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/webhook', indexRouter)
+app.use('/', indexRouter);
+app.use('/webhook', webhookRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

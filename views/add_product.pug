@@ -9,7 +9,7 @@ block content
         h2(class=['w-full p-2 mb-2 text-md font-bold text-red-800 text-center md:text-lg']) #{error}
       if success 
         h2(class=['w-full p-2 mb-2 text-md font-bold text-green-800 text-center md:text-lg']) #{success}
-      form(method='POST' action="/webhook/product" class=['w-full flex flex-wrap items-center'] validate enctype="multipart/form-data")
+      form(method='POST' action="/product" class=['w-full flex flex-wrap items-center'] validate enctype="multipart/form-data")
         div(class=['w-full mb-2'])
           label(for="product_name" class=['w-full text-sm font-semibold text-gray-700 text-left']) Product Name
           input(type="text" name="product_name" id="product_name" required class=['w-full p-2 my-1 border-2 border-gray-100 hover:shadow-inner rounded-md'])
