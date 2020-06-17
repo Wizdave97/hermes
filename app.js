@@ -7,6 +7,7 @@ var logger = require('morgan');
 const multer = require('multer');
 require('dotenv').config();
 require('./lib/firebase_config');
+require('./lib/cache');
 const indexRouter = require('./routes/index');
 const webhookRouter = require('./routes/webhook');
 
