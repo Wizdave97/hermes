@@ -145,7 +145,7 @@ const controllers = {
     })
   },
   getCheckout(req, res, next) {
-    const { sender_psid } = +req.query;
+    const sender_psid = +req.query.sender_psid.trim();
     const title = 'Checkout';
     if(sender_psid) {
       const {fullname, phone} = users[sender_psid];
