@@ -11,32 +11,32 @@ html(class=['w-full h-full p-0 m-0'])
     div(class=['bg-transparent w-full flex flex-wrap justify-center p-2 md:p-4 mt-16'])
       if error
         span(class=['w-full text-center bg-green-200 text-red-800 text-sm md:text-md p-2 mb-1']) #{error}
-      form(action="/checkout", method="post" validate class=['w-full bg-white justify-center rounded-lg shadow-2xl sm:w-4/5 md:w-7/12 lg:w-5/12 flex flex-wrap'])
+      form(action="/checkout", method="post" validate class=['w-full bg-white justify-center p-2 rounded-lg shadow-2xl sm:w-4/5 md:w-7/12 lg:w-5/12 flex flex-wrap'])
         if cart
           for item in cart
-            div(class=['w-full flex flex-wrap md:flex-no-wrap border-gray-500 p-1 border-2 my-1'])
-              div(class=['w-full md:w-24 md:h-32 mx-2'])
+            div(class=['w-full flex flex-wrap md:flex-no-wrap border-gray-500 p-1 border rounded-sm mb-1'])
+              div(class=['w-full md:w-24 md:h-32 md:mx-2'])
                 img(src=item.img_url, alt="" class=['w-full h-full'])
-              div(class=['flex flex-grow flex-no-wrap justify-end items-center'])
-                span(class=['text-gray-800 text-sm md:text-md truncate']) #{item.product_name}
-                span(class=['text-gray-800 text-sm md:text-md truncate font-bold']) #{item.quantity}
-                span(class=['text-gray-800 text-sm md:text-md truncate font-bold']) #{item.price}
-          div(class=['w-full flex flex-wrap md:flex-no-wrap border-gray-500 p-1 border-2 my-1'])
-            span(class=['text-gray-800 text-sm md:text-md truncate font-bold']) Sum Total
+              div(class=['flex flex-grow flex-no-wrap justify-end items-center mt-2 md:mt-0'])
+                span(class=['text-gray-800 text-sm md:text-md truncate mx-2']) #{item.product_name}
+                span(class=['text-gray-800 text-sm md:text-md truncate font-bold mx-2']) #{item.quantity}
+                span(class=['text-gray-800 text-sm md:text-md truncate font-bold mx-2']) #{item.price}
+          div(class=['w-full flex flex-wrap md:flex-no-wrap border-gray-500 p-1 border my-1'])
+            span(class=['text-gray-800 text-sm md:text-md truncate font-bold rounded-sm']) Sum Total
             div(class=['flex flex-grow flex-no-wrap justify-end items-center'])
               span(class=['text-gray-800 text-sm md:text-md truncate font-bold']) #{totalPrice}
           div(class=['w-full my-1 flex flex-wrap my-1 p-1'])
             label(for="fullname" class=['w-full text-md font-semibold text-gray-900']) Full Name
-            input(type="text", id="fullname" name="fullname" required class=['w-full my-1 p-1 border-2 border-gray-600 shadow-sm'] value=fullname)
-            span(class=['w-full text-center bg-green-200 text-gray-800 text-xs p-2']) e.g John Doe
+            input(type="text", id="fullname" name="fullname" required class=['w-full my-1 p-1 border rounded-md border-gray-600 shadow-sm'] value=fullname)
+            span(class=['w-full text-left  text-gray-500 text-xs p-2']) e.g John Doe
           div(class=['w-full my-1 flex flex-wrap my-1 p-1'])
             label(for="phone" class=['w-full text-md font-semibold text-gray-900']) Phone Number 
-            input(type="tel", id="phone" name="phone" required class=['w-full my-1 p-1 border-2 border-gray-600 shadow-sm'] value=phone)
-            span(class=['w-full text-center bg-green-200 text-gray-800 text-xs p-2']) e.g 2348174889696, 08174889696
+            input(type="tel", id="phone" name="phone" required class=['w-full my-1 p-1 border rounded-md border-gray-600 shadow-sm'] value=phone)
+            span(class=['w-full text-left  text-gray-500 text-xs p-2']) e.g 2348174889696, 08174889696
           div(class=['w-full my-1 flex flex-wrap my-1 p-1'])
             label(for="address" class=['w-full text-md font-semibold text-gray-900']) Address
-            textarea(name="address" id="fullname" required class=['w-full my-1 p-1 border-2 border-gray-600 shadow-sm resize-none'])
-            span(class=['w-full text-center bg-green-200 text-gray-800 text-xs p-2']) e.g 7b Hermes Street, Ikeja, Lagos, Nigeria
+            textarea(name="address" id="fullname" required class=['w-full my-1 p-1 border rounded-md border-gray-600 shadow-sm resize-none'])
+            span(class=['w-full text-left  text-gray-500 text-xs p-2']) e.g 7b Hermes Street, Ikeja, Lagos, Nigeria
           div(class=['w-full my-1 flex flex-wrap my-1 p-1'])
             button(type="submit", id="phone" name="phone"  class=['bg-indigo-700 text-white font-semibold p-2 shadow-sm rounded-md my-2']) Complete Payment
         else if !cart && !error 
