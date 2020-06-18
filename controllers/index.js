@@ -4,6 +4,8 @@ const models = require('../models');
 const path = require('path');
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
+const { users } = require('../lib/cache');
+const { fetchCart } = require('../lib/helpers');
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 const SECRET = process.env.SECRET;
 const USER_NAME = 'wizdave97@gmail.com';
@@ -141,6 +143,38 @@ const controllers = {
         error: 'Unknown error occured'
       });
     })
+  },
+  getCheckout(req, res, next) {
+    const { sender_psid } = +req.query;
+    const title = 'Checkout';
+    if(sender_psid) {
+      const {fullname, phone} = users[sender_psid];
+      fetchCart(sender_psid)
+      .then(rows => {
+        const cart = rows.map(row =>({
+          product_name: row.Product.product_name,
+          img_url: row.Product.img_url,
+          price: row.Product.price,
+          quantity: row.quantity
+        }))
+        const totalPrice = cart.reduce((total=0, obj) => {
+          return total+= (obj.quantity * price)
+        })
+        res.render('checkout', {
+          cart, totalPrice, fullname, phone, title
+        })
+      })
+      .catch(err => {
+        console.error(err);
+        res.render('checkout', {error: 'An error occured while fetching your cart, cannot compute checkout form', title})
+      })
+    }
+    else {
+      res.render('checkout', {error: 'Cannot find your id, are you sure you were directed from messenger?', title})
+    } 
+  },
+  postCheckout(req, res, next) {
+
   }
 }
 module.exports = controllers;

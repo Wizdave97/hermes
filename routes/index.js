@@ -60,6 +60,8 @@ router.get('/login', function(req, res) {
     req.locals = {}
     res.render('login', {title: 'Bot Admin Login'});
 });
-router.post('/login', index.login)
+router.post('/login', index.login);
+router.get('/checkout', index.getCheckout);
+router.post('/checkout', index.postCheckout);
 
 module.exports = router;
