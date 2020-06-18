@@ -1,4 +1,5 @@
 const lib = require('../lib/webhookHandlers')
+const { users } = require('../lib/cache');
 
 module.exports = {
     postMessage(req, res) {
@@ -19,7 +20,7 @@ module.exports = {
               //Gets sender PSID
               let senderPsId = webhook_event.sender.id;
               console.log('Sender ID: ' + senderPsId)
-    
+              if (!users[senderPsId]) users[senderPsId] = {previousPostback:'', previousCommand:''}
               //Handle Webhook Event Types
               if (webhook_event.message) {
                 lib.handleMessage(senderPsId, webhook_event.message);
