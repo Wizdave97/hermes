@@ -15,11 +15,10 @@ module.exports = {
               // Gets the message. entry.messaging is an array, but 
               // will only ever contain one message, so we get index 0
               let webhook_event = entry.messaging[0];
-              console.log(webhook_event);
+              
     
               //Gets sender PSID
               let senderPsId = webhook_event.sender.id;
-              console.log('Sender ID: ' + senderPsId)
               if (!users[senderPsId]) users[senderPsId] = {previousPostback:'', previousCommand:''}
               //Handle Webhook Event Types
               if (webhook_event.message) {
