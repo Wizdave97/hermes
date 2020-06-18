@@ -161,7 +161,7 @@ const controllers = {
           return total+= (obj.quantity * price)
         })
         res.render('checkout', {
-          cart, totalPrice, fullname, phone, title
+          cart: cart.length > 0 ? cart : null, totalPrice, fullname, phone, title
         })
       })
       .catch(err => {

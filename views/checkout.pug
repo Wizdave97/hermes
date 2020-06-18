@@ -16,7 +16,7 @@ html(class=['w-full h-full p-0 m-0'])
           for item in cart
             div(class=['w-full flex flex-wrap md:flex-no-wrap border-gray-500 p-1 border-2 my-1'])
               div(class=['w-full md:w-24 md:h-32 mx-2'])
-                img(src=items.img_url, alt="" class=['w-full h-full'])
+                img(src=item.img_url, alt="" class=['w-full h-full'])
               div(class=['flex flex-grow flex-no-wrap justify-end items-center'])
                 span(class=['text-gray-800 text-sm md:text-md truncate']) #{item.product_name}
                 span(class=['text-gray-800 text-sm md:text-md truncate font-bold']) #{item.quantity}
