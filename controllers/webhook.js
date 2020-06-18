@@ -19,7 +19,7 @@ module.exports = {
     
               //Gets sender PSID
               let senderPsId = webhook_event.sender.id;
-              if (!users[senderPsId]) users[senderPsId] = {previousPostback:'', previousCommand:''}
+              if (!users[senderPsId]) users[senderPsId] = {previousPostback:'', previousCommand:'', cart: 0}
               //Handle Webhook Event Types
               if (webhook_event.message) {
                 lib.handleMessage(senderPsId, webhook_event.message);
