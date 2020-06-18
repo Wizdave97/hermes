@@ -158,7 +158,7 @@ const controllers = {
           quantity: row.quantity
         }))
         const totalPrice = cart.reduce((total=0, obj) => {
-          return total+= (obj.quantity * price)
+          return total+= (obj.quantity * obj.price)
         })
         res.render('checkout', {
           cart: cart.length > 0 ? cart : null, totalPrice, fullname, phone, title
