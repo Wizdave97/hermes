@@ -2,29 +2,32 @@ doctype html
 html(class=['w-full h-full p-0 m-0'])
   head
     title Hermes | #{title}
-    link(rel='stylesheet', href='/stylesheets/tailwind.css')
-    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    link(rel='stylesheet' href='/stylesheets/tailwind.css')
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
   body(class=['w-full h-full  p-0 m-0 bg-indigo-100'])
     script(src="/javascripts/msg.js" defer)
-    nav(class=['w-full h-16 bg-white fixed top-0 shadow-lg z-20 flex flex-nowrap justify-center items-center'])
-      h1(class=['text-center text-lg md:text-xl font-bold text-gray-800']) Checkout
-    div(class=['bg-transparent w-full flex flex-wrap justify-center p-2 md:p-4 mt-16'])
+    nav(class=['w-full h-24 bg-white fixed top-0 shadow-lg z-20 flex flex-wrap justify-center items-center'])
+      h1(class=['w-full text-center text-lg md:text-xl font-bold text-gray-800']) Checkout
+      span(class=['w-full mt-1 text-left text-sm font-bold text-gray-600']) Use the following card details to test out the payment system,
+      span(class=['w-full mt-1 text-left text-sm text-gray-600'])  Card Number: 507850785078507804, CVV: 884, Expiry: 06/20, PIN: 0000, OTP: 123456
+    div(class=['bg-transparent w-full flex flex-wrap justify-center p-2 md:p-4 mt-24'])
+      span(class='hidden' id="sender_psid") #{sender_psid}
       if error
         span(class=['w-full text-center bg-green-200 text-red-800 text-sm md:text-md p-2 mb-1']) #{error}
-      form(action="/checkout", method="post" validate class=['w-full bg-white justify-center p-2 rounded-lg shadow-2xl sm:w-4/5 md:w-7/12 lg:w-5/12 flex flex-wrap'])
+      form(id="checkoutForm"  validate class=['w-full bg-white justify-center p-2 rounded-lg shadow-2xl sm:w-4/5 md:w-7/12 lg:w-5/12 flex flex-wrap'])
         if cart
           for item in cart
             div(class=['w-full flex flex-wrap md:flex-no-wrap border-gray-500 p-1 border rounded-sm mb-1'])
               div(class=['w-full md:w-24 md:h-32 md:mx-2'])
-                img(src=item.img_url, alt="" class=['w-full h-full'])
+                img(src=item.img_url alt="" class=['w-full h-full'])
               div(class=['flex flex-grow flex-no-wrap justify-end items-center mt-4 p-1 border-t border-gray-200 md:mt-0'])
                 span(class=['text-gray-800 text-sm flex-grow text-left md:text-md truncate mx-2']) #{item.product_name}
                 span(class=['text-gray-800 text-sm md:text-md truncate font-bold mx-2']) #{item.quantity}
                 span(class=['text-gray-800 text-sm md:text-md truncate font-bold mx-2']) #{item.price}
           div(class=['w-full flex flex-wrap md:flex-no-wrap border-gray-500 p-1 border my-1'])
-            span(class=['text-gray-800 text-sm md:text-md truncate font-bold rounded-sm']) Sum Total
+            span(class=['text-gray-800 text-sm md:text-md truncate font-bold rounded-sm'] id="totalPrice") Sum Total
             div(class=['flex flex-grow flex-no-wrap justify-end items-center'])
-              span(class=['text-gray-800 text-sm md:text-md truncate font-bold']) #{totalPrice}
+              span(class=['text-gray-800 text-sm md:text-md truncate font-bold'] id="totalPrice") #{totalPrice}
           div(class=['w-full my-1 flex flex-wrap my-1 p-1'])
             span(for="fullname" class=['w-full text-md text-center font-semibold text-gray-900']) Complete the Chekout Form
             span(for="fullname" class=['w-full text-xs text-center font-light text-gray-900']) Ensure all details filled in are correct
@@ -34,19 +37,22 @@ html(class=['w-full h-full p-0 m-0'])
             span(class=['w-full text-left  text-gray-500 text-xs p-2']) e.g John Doe
           div(class=['w-full my-1 flex flex-wrap my-1 p-1'])
             label(for="phone" class=['w-full text-md font-semibold text-gray-900']) Phone Number 
-            input(type="tel", id="phone" name="phone" required class=['w-full my-1 p-1 border rounded-md border-gray-600 shadow-sm'] value=phone)
+            input(type="tel" id="phone" name="phone" required class=['w-full my-1 p-1 border rounded-md border-gray-600 shadow-sm'] value=phone)
             span(class=['w-full text-left  text-gray-500 text-xs p-2']) e.g 2348174889696, 08174889696
           div(class=['w-full my-1 flex flex-wrap my-1 p-1'])
             label(for="email" class=['w-full text-md font-semibold text-gray-900']) Email 
-            input(type="email", id="email" name="email" required class=['w-full my-1 p-1 border rounded-md border-gray-600 shadow-sm'] value=email)
+            input(type="email" id="email" name="email" required class=['w-full my-1 p-1 border rounded-md border-gray-600 shadow-sm'] value=email)
             span(class=['w-full text-left  text-gray-500 text-xs p-2']) e.g example@gmail.com
           div(class=['w-full my-1 flex flex-wrap my-1 p-1'])
             label(for="address" class=['w-full text-md font-semibold text-gray-900']) Address
-            textarea(name="address" id="fullname" required class=['w-full my-1 p-1 border rounded-md border-gray-600 shadow-sm resize-none'])
+            textarea(name="address" id="address" required class=['w-full my-1 p-1 border rounded-md border-gray-600 shadow-sm resize-none'])
             span(class=['w-full text-left  text-gray-500 text-xs p-2']) e.g 7b Hermes Street, Ikeja, Lagos, Nigeria
           div(class=['w-full my-1 flex flex-wrap my-1 p-1'])
-            button(type="submit", id="phone" name="phone"  class=['bg-indigo-700 text-white font-semibold p-2 shadow-sm rounded-md my-2']) Complete Payment
+            button(type="submit" class=['bg-indigo-700 text-white font-semibold p-2 shadow-sm rounded-md my-2']) Complete Payment
         else if !cart && !error 
           span(class=['w-full text-center bg-green-200 text-gray-800 text-sm md:text-md p-2']) Your cart is empty, please add items to your cart from messenger
-          button(id="back-to-messenger" class=['bg-indigo-700 text-white font-semibold p-2 shadow-sm rounded-md my-2']) Back to Messenger
+          button(id="back-to-messenger" class=['bg-indigo-700 text-white font-semibold p-2 shadow-sm rounded-md my-2']) Go back to Messenger
+    script(src="https://js.paystack.co/v2/inline.js")
+    script(src="javascripts/payment.js")
+    
 

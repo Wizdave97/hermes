@@ -62,6 +62,14 @@ router.get('/login', function(req, res) {
 });
 router.post('/login', index.login);
 router.get('/checkout', index.getCheckout);
-router.post('/checkout', index.postCheckout);
+router.post('/checkout', [
+  body('sender_psid', 'sender_psid required').isNumeric(),
+  body('fullname').isLength({min: 4, max:665}).escape().trim(),
+  body('order_number', 'order_number must be a big int').isNumeric(),
+  body('paid', 'paid must be true').isBoolean(),
+  body('address', 'address is required').isLength({min: 3, max:1600}).escape().trim(),
+  body('phone', 'phone number is required').isLength({min:11, max:13}).escape().trim(),
+  body('transaction_ref', 'transation reference is required').isLength({min:5}).escape().trim()
+], index.postCheckout);
 
 module.exports = router;

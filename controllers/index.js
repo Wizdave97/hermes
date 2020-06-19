@@ -6,9 +6,11 @@ const fs = require('fs');
 const jwt = require('jsonwebtoken');
 const { users } = require('../lib/cache');
 const { fetchCart } = require('../lib/helpers');
+const { callSendAPI} = require('../lib/webhookHandlers');
 const SECRET = process.env.SECRET;
 const USER_NAME = 'wizdave97@gmail.com';
 const PASSWORD = 'valerianspace';
+
 
 const renderAddProduct = (res,locals) => {
   return models.Categories.findAll().then(rows => {
@@ -144,7 +146,7 @@ const controllers = {
     })
   },
   getCheckout(req, res, next) {
-    const sender_psid = +req.query.sender_psid.trim();
+    const sender_psid = +req.query.sender_psid ? +req.query.sender_psid.trim(): false;
     const title = 'Checkout';
     if(sender_psid) {
       let fullname, phone, email;
@@ -168,7 +170,7 @@ const controllers = {
             totalPrice += (+row.quantity * +row.price)
         })
         res.render('checkout', {
-          cart: cart.length > 0 ? cart : null, totalPrice, fullname, phone, email, title
+          cart: cart.length > 0 ? cart : null, totalPrice, fullname, phone, email, title, sender_psid
         })
       })
       .catch(err => {
@@ -181,7 +183,43 @@ const controllers = {
     } 
   },
   postCheckout(req, res, next) {
-
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.status(400).send({status: 400, msg:'Check your transaction details and ensure all are correct'});
+      return;
+    }
+    
+    let completedOrder;
+    models.sequelize.transaction((t) => {
+      return models.Orders.create(req.body,{transaction: t})
+      .then(order => {
+        completedOrder = order;
+        return models.Cart.findAll({where:{
+          sender_psid: req.body.sender_psid
+        },transaction: t}).then(rows => {
+          const itemRows = rows.map(row => {
+            return {order_id:completedOrder.id, product_id: row.product_id, quantity: row.quantity}
+          })
+          return models.Items.bulkCreate(itemRows, {transaction: t}).then(result => {
+            return models.Cart.destroy({where: {sender_psid: req.body.sender_psid}, transaction: t});
+          })
+        })
+      })
+    }).then(resp => {
+      res.status(200).send({status:200, msg:"Order completed successfully"});
+      callSendAPI(req.body.sender_psid, 
+        {text: `Your order has been completed, you wil be contacted on your mobile number for delivery.\n
+        Your Order Details are\n
+        Order number: ${completedOrder.order_number}\n
+        Transaction_Ref: ${req.body.transaction_ref}\n
+        fullname: ${req.body.fullname}\n
+        Phone: ${req.body.phone}\n
+        Address: ${req.body.address}`});
+    }).catch(err => {
+      console.error(err);
+      res.status(500).send({status:500, msg:'An error occured while creating the transaction, please contact us to get a refund'});
+      callSendAPI(req.body.sender_psid, {text: 'An error occured while creating the transaction, please contact us to get a refund'});
+    })
   }
 }
 module.exports = controllers;
