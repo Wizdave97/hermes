@@ -39,9 +39,8 @@ function makePayment(event) {
                 paid: true,
                 transaction_ref: data.tx_ref
                 }
-                console.log(body)
                 alert('Payment Successful! Reference: ' + data.tx_ref + '\nClose this alert and wait while your order is completed\nPlease do not close the modal');
-                fetch('http://localhost:3000/checkout',{
+                fetch('https://sheltered-headland-16417.herokuapp.com//checkout',{
                     method:'POST',
                     headers: {
                         'Content-Type': 'application/json'
