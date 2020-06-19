@@ -185,6 +185,7 @@ const controllers = {
   postCheckout(req, res, next) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      console.log(errors.array());
       res.status(400).send({status: 400, msg:'Check your transaction details and ensure all are correct'});
       return;
     }

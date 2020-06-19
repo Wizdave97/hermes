@@ -17,7 +17,7 @@ function makePayment(event) {
         return;
     }
     FlutterwaveCheckout({
-      public_key: "FLWPUBK-0c4fd187aa15166455427e8fe8f156ba-X",
+      public_key: "FLWPUBK_TEST-9d828a65da00ae9be009cc7436ddcd5e-X",
       tx_ref: `${Date.now()}-${email}`,
       amount: +amount,
       currency: "NGN",
@@ -29,28 +29,32 @@ function makePayment(event) {
       },
       callback: function (data) {
         if (data.status === 'successful') {
-           
+            
             const body = {
                 sender_psid: +sender_psid,
                 order_number: Date.now(),
-                fullname: name.join(' '),
+                fullname: name,
                 phone: phone,
                 address: address,
                 paid: true,
                 transaction_ref: data.tx_ref
                 }
-                alert('Payment Successful! Reference: ' + reference + '\nClose this alert and wait while your order is completed');
-                fetch('https://sheltered-headland-16417.herokuapp.com/checkout',{
+                console.log(body)
+                alert('Payment Successful! Reference: ' + data.tx_ref + '\nClose this alert and wait while your order is completed\nPlease do not close the modal');
+                fetch('http://localhost:3000/checkout',{
                     method:'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
                     body: JSON.stringify(body)
                     }
                 ).then(resp => resp.json()).then(resp => {
+                    
                     alert(resp.msg);
                 }).catch(err => {
                     alert("Could not process transaction, please contact our customer service with your reference number for a refund");
                 })
                 // Make an AJAX call to your server with the reference to verify the transaction
-
         }
         else {
             alert("Payment was not successful");
