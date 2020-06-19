@@ -62,7 +62,7 @@ function payWithPaystack(event) {
   }  
   if (email && amount && phone && sender_psid && name && address)
   {
-    const paystackPopup = new Popup(config);
+    const paystackPopup = new PaystackPop(config);
     paystackPopup.open();
   }
   else{
