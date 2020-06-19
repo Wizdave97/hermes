@@ -10,7 +10,7 @@ function payWithPaystack(event) {
   const address = document.getElementById('address').value;
   const sender_psid = document.getElementById('sender_psid').value;
   const name = document.getElementById('fullname').value.split(' ').filter(str => (Boolean(str)));
-  const handler = PaystackPop.setup({
+  const config = {
 
     key: 'pk_test_e413e8381c8b5bf384fd2afee1dc43b8b965c087', // Replace with your public key
 
@@ -59,11 +59,11 @@ function payWithPaystack(event) {
       alert('Transaction was not completed please try again, window closed.');
 
     },
-
-  });   
+  }  
   if (email && amount && phone && sender_psid && name && address)
   {
-    handler.openIframe();
+    const paystackPopup = new Popup(config);
+    paystackPopup.open();
   }
   else{
       alert('Please fill the form correctly')

@@ -8,13 +8,13 @@ html(class=['w-full h-full p-0 m-0'])
     script(src="/javascripts/msg.js" defer)
     nav(class=['w-full h-24 bg-white fixed top-0 shadow-lg z-20 flex flex-wrap justify-center items-center'])
       h1(class=['w-full text-center text-lg md:text-xl font-bold text-gray-800']) Checkout
-      span(class=['w-full mt-1 text-left text-sm font-bold text-gray-600']) Use the following card details to test out the payment system,
-      span(class=['w-full mt-1 text-left text-sm text-gray-600'])  Card Number: 507850785078507804, CVV: 884, Expiry: 06/20, PIN: 0000, OTP: 123456
+      span(class=['w-full mt-1 text-center text-sm font-bold text-gray-600 p-1']) Use the following card details to test out the payment system,
+      span(class=['w-full mt-1 text-center text-sm text-gray-600 p-1'])  Card Number: 507850785078507804, CVV: 884, Expiry: 06/20, PIN: 0000, OTP: 123456
     div(class=['bg-transparent w-full flex flex-wrap justify-center p-2 md:p-4 mt-24'])
       span(class='hidden' id="sender_psid") #{sender_psid}
       if error
         span(class=['w-full text-center bg-green-200 text-red-800 text-sm md:text-md p-2 mb-1']) #{error}
-      form(id="checkoutForm"  validate class=['w-full bg-white justify-center p-2 rounded-lg shadow-2xl sm:w-4/5 md:w-7/12 lg:w-5/12 flex flex-wrap'])
+      form(id="checkoutForm"  validate class=['w-full bg-white justify-center p-2 rounded-lg shadow-2xl sm:w-4/5 md:w-8/12 lg:w-5/12 flex flex-wrap'])
         if cart
           for item in cart
             div(class=['w-full flex flex-wrap md:flex-no-wrap border-gray-500 p-1 border rounded-sm mb-1'])
