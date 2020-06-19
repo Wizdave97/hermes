@@ -1,5 +1,6 @@
-const lib = require('../lib/webhookHandlers')
+const lib = require('../lib/webhookHandlers');
 const { users } = require('../lib/cache');
+const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 
 module.exports = {
     postMessage(req, res) {

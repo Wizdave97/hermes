@@ -4,7 +4,7 @@ html(class=['w-full h-full p-0 m-0'])
     title Hermes | #{title}
     link(rel='stylesheet', href='/stylesheets/tailwind.css')
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
-  body(class=['w-full h-full  p-0 m-0 bg-indigo-300'])
+  body(class=['w-full h-full  p-0 m-0 bg-indigo-100'])
     script(src="/javascript/msg.js" defer)
     nav(class=['w-full h-16 bg-white fixed top-0 shadow-lg z-20 flex flex-nowrap justify-center'])
       h1(class=['text-center text-lg md:text-xl font-bold text-gray-800']) Checkout
@@ -17,8 +17,8 @@ html(class=['w-full h-full p-0 m-0'])
             div(class=['w-full flex flex-wrap md:flex-no-wrap border-gray-500 p-1 border rounded-sm mb-1'])
               div(class=['w-full md:w-24 md:h-32 md:mx-2'])
                 img(src=item.img_url, alt="" class=['w-full h-full'])
-              div(class=['flex flex-grow flex-no-wrap justify-end items-center mt-2 md:mt-0'])
-                span(class=['text-gray-800 text-sm md:text-md truncate mx-2']) #{item.product_name}
+              div(class=['flex flex-grow flex-no-wrap justify-end items-center mt-4 p-1 border-t border-gray-200 md:mt-0'])
+                span(class=['text-gray-800 text-sm flex-grow text-left md:text-md truncate mx-2']) #{item.product_name}
                 span(class=['text-gray-800 text-sm md:text-md truncate font-bold mx-2']) #{item.quantity}
                 span(class=['text-gray-800 text-sm md:text-md truncate font-bold mx-2']) #{item.price}
           div(class=['w-full flex flex-wrap md:flex-no-wrap border-gray-500 p-1 border my-1'])

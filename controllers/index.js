@@ -6,7 +6,6 @@ const fs = require('fs');
 const jwt = require('jsonwebtoken');
 const { users } = require('../lib/cache');
 const { fetchCart } = require('../lib/helpers');
-const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 const SECRET = process.env.SECRET;
 const USER_NAME = 'wizdave97@gmail.com';
 const PASSWORD = 'valerianspace';
@@ -162,9 +161,10 @@ const controllers = {
           price: row.Product.price,
           quantity: row.quantity
         }))
-        const totalPrice = cart.reduce((total = 0, obj) => {
-          let sumTotal = (obj.quantity * obj.price)
-          return total+= sumTotal
+        
+        let totalPrice = 0;
+        cart.forEach(row => {
+            totalPrice += (+row.quantity * +row.price)
         })
         res.render('checkout', {
           cart: cart.length > 0 ? cart : null, totalPrice, fullname, phone, title
