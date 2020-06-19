@@ -192,7 +192,16 @@ const controllers = {
     
     let completedOrder;
     models.sequelize.transaction((t) => {
-      return models.Orders.create(req.body,{transaction: t})
+      const orderDetails = {
+        fullname: req.body.fullname,
+        phone: req.body.phone,
+        address: req.body.address,
+        transaction_ref: req.body.transaction_ref,
+        paid: req.body.paid,
+        order_number: req.body.order_number,
+        sender_psid: req.body.sender_psid
+      }
+      return models.Orders.create(orderDetails,{transaction: t})
       .then(order => {
         completedOrder = order;
         return models.Cart.findAll({where:{
@@ -202,14 +211,43 @@ const controllers = {
             return {order_id:completedOrder.id, product_id: row.product_id, quantity: row.quantity}
           })
           return models.Items.bulkCreate(itemRows, {transaction: t}).then(result => {
-            return models.Cart.destroy({where: {sender_psid: req.body.sender_psid}, transaction: t});
+            return models.Cart.destroy({where: {sender_psid: req.body.sender_psid}, transaction: t})
           })
         })
       })
     }).then(resp => {
+      models.Users.findAll({where:{
+        user_psid: req.body.sender_psid
+      }}).then(rows => {
+        if (rows.length >= 1) {
+          models.Users.update({
+            fullname: req.body.fullname, 
+            phone: req.body.phone, 
+            email: req.body.email,
+          }, { where: { user_psid: req.body.sender_psid}}).then((result)=>{
+            console.log(result)
+          }).catch(err => {
+            console.error(err)
+          })
+        }
+        else {
+          models.Users.create({
+            fullname: req.body.fullname, 
+            phone: req.body.phone, 
+            email: req.body.email,
+            user_psid: req.body.sender_psid
+          }).then(result => {
+            console.log(result)
+          }).catch(err => {
+            console.error(err)
+          })
+        }
+      }).catch(err => {
+        console.error(err)
+      })
       res.status(200).send({status:200, msg:"Order completed successfully"});
       callSendAPI(req.body.sender_psid, 
-        {text: `Your order has been completed, you wil be contacted on your mobile number for delivery.\n
+        {text: `Your order has been completed, you will be contacted on your mobile number for delivery.\n
         Your Order Details are\n
         Order number: ${completedOrder.order_number}\n
         Transaction_Ref: ${req.body.transaction_ref}\n

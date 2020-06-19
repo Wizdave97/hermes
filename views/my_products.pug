@@ -1,0 +1,21 @@
+extends layout
+
+block content
+  div(class=['w-full bg-white justify-center mx-auto p-2 rounded-lg overflow-x-auto shadow-2xl sm:w-4/5 md:w-8/12 lg:w-5/12 flex flex-wrap'])
+    div(class=['w-full p-2 my-2 shadow-lg rounded-md flex flex-no-wrap justify-beween items-center'])
+        span(class=['flex-grow text-lg font-bold p-2 text-left']) Name
+        span(class=['text-lg font-bold mx-2 p-2']) Stock
+        span(class=['p-2 rounded-sm font-bold text-white mx-2']) Actions
+    for product in products
+      --var editRoute = '/editProduct?id='+product.id
+      --var deleteRoute = '/deleteProduct?id='+product.id
+      div(class=['w-full p-2 my-2 shadow-lg rounded-md flex flex-no-wrap justify-beween items-center'])
+        span(class=['flex-grow text-lg font-bold p-2 text-left']) #{product.product_name}
+        span(class=['text-lg font-bold mx-2 p-2']) #{stock}
+        a(class=['bg-green-600 p-2 rounded-sm font-bold text-white mx-2'] href=#{editRoute} ) Edit
+        a(class=['bg-red-600 p-2 rounded-sm font-bold text-white mx-2'] href=#{deleteRoute}) Delete
+    div(class=['w-full p-2 my-2 shadow-lg rounded-md flex flex-no-wrap justify-beween items-center'])
+      if previous
+        a(class=['bg-green-600 p-2 rounded-sm font-bold text-white mx-2'] href=#{previous} ) Back
+      if next 
+        a(class=['bg-green-600 p-2 rounded-sm font-bold text-white mx-2'] href=#{next} ) Next

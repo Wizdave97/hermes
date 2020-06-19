@@ -65,6 +65,7 @@ router.get('/checkout', index.getCheckout);
 router.post('/checkout', [
   body('sender_psid', 'sender_psid required').isNumeric(),
   body('fullname').isLength({min: 4, max:665}).escape().trim(),
+  body('email', 'email is required').isEmail().escape().trim(),
   body('order_number', 'order_number must be a big int').isNumeric(),
   body('paid', 'paid must be true').isBoolean(),
   body('address', 'address is required').isLength({min: 3, max:1600}).escape().trim(),
