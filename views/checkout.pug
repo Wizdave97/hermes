@@ -6,7 +6,7 @@ html(class=['w-full h-full p-0 m-0'])
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
   body(class=['w-full h-full  p-0 m-0 bg-indigo-100'])
     script(src="/javascript/msg.js" defer)
-    nav(class=['w-full h-16 bg-white fixed top-0 shadow-lg z-20 flex flex-nowrap justify-center'])
+    nav(class=['w-full h-16 bg-white fixed top-0 shadow-lg z-20 flex flex-nowrap justify-center items-center'])
       h1(class=['text-center text-lg md:text-xl font-bold text-gray-800']) Checkout
     div(class=['bg-transparent w-full flex flex-wrap justify-center p-2 md:p-4 mt-16'])
       if error
@@ -26,6 +26,9 @@ html(class=['w-full h-full p-0 m-0'])
             div(class=['flex flex-grow flex-no-wrap justify-end items-center'])
               span(class=['text-gray-800 text-sm md:text-md truncate font-bold']) #{totalPrice}
           div(class=['w-full my-1 flex flex-wrap my-1 p-1'])
+            span(for="fullname" class=['w-full text-md text-center font-semibold text-gray-900']) Complete the Chekout Form
+            span(for="fullname" class=['w-full text-xs text-center font-light text-gray-900']) Ensure all details filled in are correct
+          div(class=['w-full my-1 flex flex-wrap my-1 p-1'])
             label(for="fullname" class=['w-full text-md font-semibold text-gray-900']) Full Name
             input(type="text", id="fullname" name="fullname" required class=['w-full my-1 p-1 border rounded-md border-gray-600 shadow-sm'] value=fullname)
             span(class=['w-full text-left  text-gray-500 text-xs p-2']) e.g John Doe
@@ -34,6 +37,10 @@ html(class=['w-full h-full p-0 m-0'])
             input(type="tel", id="phone" name="phone" required class=['w-full my-1 p-1 border rounded-md border-gray-600 shadow-sm'] value=phone)
             span(class=['w-full text-left  text-gray-500 text-xs p-2']) e.g 2348174889696, 08174889696
           div(class=['w-full my-1 flex flex-wrap my-1 p-1'])
+            label(for="email" class=['w-full text-md font-semibold text-gray-900']) Email 
+            input(type="email", id="email" name="email" required class=['w-full my-1 p-1 border rounded-md border-gray-600 shadow-sm'] value=email)
+            span(class=['w-full text-left  text-gray-500 text-xs p-2']) e.g example@gmail.com
+          div(class=['w-full my-1 flex flex-wrap my-1 p-1'])
             label(for="address" class=['w-full text-md font-semibold text-gray-900']) Address
             textarea(name="address" id="fullname" required class=['w-full my-1 p-1 border rounded-md border-gray-600 shadow-sm resize-none'])
             span(class=['w-full text-left  text-gray-500 text-xs p-2']) e.g 7b Hermes Street, Ikeja, Lagos, Nigeria
@@ -41,5 +48,5 @@ html(class=['w-full h-full p-0 m-0'])
             button(type="submit", id="phone" name="phone"  class=['bg-indigo-700 text-white font-semibold p-2 shadow-sm rounded-md my-2']) Complete Payment
         else if !cart && !error 
           span(class=['w-full text-center bg-green-200 text-gray-800 text-sm md:text-md p-2']) Your cart is empty, please add items to your cart from messenger
-          button(class=['bg-indigo-700 text-white font-semibold p-2 shadow-sm rounded-md my-2']) Back to Messenger
+          button(id="back-to-messenger" class=['bg-indigo-700 text-white font-semibold p-2 shadow-sm rounded-md my-2']) Back to Messenger
 

@@ -8,4 +8,12 @@
 
   window.extAsyncInit = function() {
     // the Messenger Extensions JS SDK is done loading 
+    const backToMessenger = document.getElementById('back-to-messenger');
+    backToMessenger.onclick = (event) => {
+      MessengerExtensions.requestCloseBrowser(function success() {
+        // webview closed
+      }, function error(err) {
+        // an error occurred
+      });
+    }
   };

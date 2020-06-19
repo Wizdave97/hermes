@@ -147,11 +147,12 @@ const controllers = {
     const sender_psid = +req.query.sender_psid.trim();
     const title = 'Checkout';
     if(sender_psid) {
-      let fullname, phone;
+      let fullname, phone, email;
       if(users[sender_psid]){
         user = users[sender_psid];
         fullname = user.fullname;
         phone = user.phone;
+        email = user.email;
       }
       fetchCart(sender_psid)
       .then(rows => {
@@ -167,7 +168,7 @@ const controllers = {
             totalPrice += (+row.quantity * +row.price)
         })
         res.render('checkout', {
-          cart: cart.length > 0 ? cart : null, totalPrice, fullname, phone, title
+          cart: cart.length > 0 ? cart : null, totalPrice, fullname, phone, email, title
         })
       })
       .catch(err => {
