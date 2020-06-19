@@ -4,11 +4,11 @@ checkoutForm.addEventListener('submit', payWithPaystack, false);
 
 function payWithPaystack(event) {
   event.preventDefault();
-  const email = document.getElementById('email').value;
-  const amount = document.getElementById('totalPrice').textContent;
-  const phone = document.getElementById('phone').value;
-  const address = document.getElementById('address').value;
-  const sender_psid = document.getElementById('sender_psid').textContent;
+  const email = document.getElementById('email').value.trim();
+  const amount = document.getElementById('totalPrice').textContent.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const address = document.getElementById('address').value.trim();
+  const sender_psid = document.getElementById('sender_psid').textContent.trim();
   const name = document.getElementById('fullname').value.split(' ').filter(str => (Boolean(str)));
   const config = {
 
@@ -16,7 +16,7 @@ function payWithPaystack(event) {
 
     email: email,
 
-    amount: +amount, // the amount value is multiplied by 100 to convert to the lowest currency unit
+    amount: +amount * 100, // the amount value is multiplied by 100 to convert to the lowest currency unit
 
     currency: 'NGN', // Use GHS for Ghana Cedis or USD for US Dollars
 
