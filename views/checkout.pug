@@ -9,8 +9,8 @@ html(class=['w-full h-full p-0 m-0'])
     nav(class=['w-full h-32 md:h-24 bg-white fixed top-0 shadow-lg z-20 flex flex-wrap justify-center items-center'])
       h1(class=['w-full text-center text-lg md:text-xl font-bold text-gray-800']) Checkout
       span(class=['w-full mt-1 text-center text-sm font-bold text-gray-600 p-1']) Use the following card details to test out the payment system,
-      span(class=['w-full mt-1 text-center text-sm text-gray-600 p-1'])  Card Number: 507850785078507804, CVV: 884, Expiry: 06/20, PIN: 0000, OTP: 123456
-    div(class=['bg-transparent w-full flex flex-wrap justify-center p-2 md:p-4 mt-24'])
+      span(class=['w-full mt-1 text-center text-sm text-gray-600 p-1'])  Card Number: 5399 8383 8383 8381, CVV: 470, Expiry: 10/31, PIN: 3310, OTP: 12345
+    div(class=['bg-transparent w-full flex flex-wrap justify-center p-2 md:p-4 mt-32 md: mt-24'])
       span(class='hidden' id="sender_psid") #{sender_psid}
       if error
         span(class=['w-full text-center bg-green-200 text-red-800 text-sm md:text-md p-2 mb-1']) #{error}
@@ -52,7 +52,7 @@ html(class=['w-full h-full p-0 m-0'])
         else if !cart && !error 
           span(class=['w-full text-center bg-green-200 text-gray-800 text-sm md:text-md p-2']) Your cart is empty, please add items to your cart from messenger
           button(id="back-to-messenger" class=['bg-indigo-700 text-white font-semibold p-2 shadow-sm rounded-md my-2']) Go back to Messenger
-    script(src="https://js.paystack.co/v2/inline.js")
+    script(src="https://checkout.flutterwave.com/v3.js")
     script(src="javascripts/payment.js")
     
 
