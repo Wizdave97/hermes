@@ -4,7 +4,7 @@ const models = require('../models');
 const path = require('path');
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
-const { users } = require('../lib/cache');
+const { users, categories } = require('../lib/cache');
 const { fetchCart } = require('../lib/helpers');
 const { callSendAPI} = require('../lib/webhookHandlers');
 const SECRET = process.env.SECRET;
@@ -115,8 +115,8 @@ const controllers = {
       const { email, password} = req.body;
       if (email.trim() === USER_NAME && password.trim() === PASSWORD)
       {
-        const cookieExpiration = 1000 * 24 * 60;
-        const token = jwt.sign({email, password}, SECRET, { expiresIn: '24h'});
+        const cookieExpiration = 1000 * 24 * 60 * 60;
+        const token = jwt.sign({email, password}, SECRET, { expiresIn: Date.now() + cookieExpiration});
         res.cookie('token', token, {
           expires: new Date(Date.now() + cookieExpiration),
           secure: process.env.NODE_ENV !== 'development',
@@ -259,6 +259,142 @@ const controllers = {
       res.status(500).send({status:500, msg:'An error occured while creating the transaction, please contact us to get a refund'});
       callSendAPI(req.body.sender_psid, {text: 'An error occured while creating the transaction, please contact us to get a refund'});
     })
+  },
+  getEditProduct(req, res) {
+    try {
+      const errors = validationResult(req);
+      const id = +req.query.id;
+      if (errors.isEmpty()) {
+          models.sequelize.transaction(t => {
+            return models.Categories.findAll({transaction: t})
+            .then(categories => {
+              return models.Products.findAll({
+                where: {
+                  id
+                },
+                transaction: t
+              }).then(rows => {
+                res.render('edit_products', {
+                  categories, product:rows[0]
+                })
+              })
+            })
+          }).then(result => {
+  
+          }).catch(err => {
+            console.error(err)
+            res.status(400).render('edit_products', {
+              error: 'An error occured while fetching product details'
+            })
+          })
+          return;
+      }
+      res.status(400).render('edit_products', {
+        error: 'Product id was missing in request'
+      })
+    }
+    catch (err) {
+      console.error(err);
+      res.status(500).render('error', {message : 'An internal server error occured'});
+    }
+  },
+  putProduct(req, res) {
+    try {
+      const errors = validationResult(req);
+      if(errors.isEmpty()) {
+        const id = +req.query.id;
+        const errors = validationResult(req);
+        models.Products.update({
+          product_name: req.body.product_name,
+          stock: req.body.stock,
+          price: req.body.price,
+          category_id: +req.body.category
+        }, {
+          where: { id }
+        }).then(result => {
+          res.redirect('/allProducts');
+        }).catch(err => {
+          console.error(err);
+          res.render('edit_products', {
+            error: 'Unable to update product details, please try again', categories
+          });
+        })
+        return;
+      }
+      res.status(400).render('edit_products', {
+        error: 'Ensure all form fields are correctly filled and the product id exists in the query'
+      })
+    }
+    catch (err) {
+      console.error(err);
+      res.status(500).render('error', {message : 'An internal server error occured'});
+    }
+  },
+  getOrders (req, res) {
+    try {
+      models.sequelize.transaction(t => {
+        return models.Orders.findAll({
+          include:[{
+            model: models.Items,
+            required: true
+          }],
+          transaction: t
+        }).then( orders => {
+          return models.Items.findAll({
+            include: [{
+              model: models.Products,
+              required: true
+            }],
+            transaction: t
+          }).then( items => {
+            const completeOrders = [];
+            orders.map(order => {
+              order.items = items.filter( item => {
+                return order.id === item.order_id
+              })
+              completeOrders.push(order);
+            })
+            res.render('orders', {
+              orders: completeOrders
+            })
+          })
+        })
+      }).then(result => {
+
+      }).catch(err => {
+        console.error(err)
+        res.render('error', {
+          message: "Unable to retrieve orders at this time"
+        })
+      })
+     }
+     catch (err) {
+       console.error(err);
+       res.status(500).render('error', {message : 'An internal server error occured'});
+     }
+  },
+  getProductCategories (req, res) {
+
+  },
+  deleteProductCategories (req, res) {
+
+  },
+  getAllProducts (req, res) {
+    try {
+     models.Products.findAll()
+     .then(rows => {
+        res.render('my_products', {products: rows});
+     }).catch(err => {
+       res.render('my_products', {
+         error:"Error occured while fetching products, please reload the page"
+       });
+     })
+
+    }
+    catch (err) {
+      console.error(err);
+      res.status(500).render('error', {message : 'An internal server error occured'});
+    }
   }
 }
 module.exports = controllers;

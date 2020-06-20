@@ -1,6 +1,6 @@
 var express = require('express');
 const multer = require('multer');
-const { body } = require('express-validator');
+const { body, query } = require('express-validator');
 const path = require('path');
 var router = express.Router();
 const index = require('../controllers/index');
@@ -72,5 +72,17 @@ router.post('/checkout', [
   body('phone', 'phone number is required').isLength({min:11, max:13}).escape().trim(),
   body('transaction_ref', 'transation reference is required').isLength({min:5}).escape().trim()
 ], index.postCheckout);
+router.get('/editProduct', checkAuth, [query('id').isNumeric()], index.getEditProduct);
+router.post('/editProduct', checkAuth, [
+    query('id').isNumeric(),
+    body('product_name').isString().isLength({min: 3}).escape().trim(),
+    body('price').isNumeric(),
+    body('stock').isNumeric(),
+    body('category').isNumeric()
+], index.putProduct);
+router.get('/orders', checkAuth, index.getOrders);
+router.get('/productCategories', checkAuth, index.getProductCategories);
+router.delete('/productCategories', checkAuth, index.deleteProductCategories);
+router.get('/allProducts', checkAuth, index.getAllProducts);
 
 module.exports = router;

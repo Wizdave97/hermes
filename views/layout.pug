@@ -5,13 +5,19 @@ html(class=['w-full h-full p-0 m-0'])
     link(rel='stylesheet', href='/stylesheets/tailwind.css')
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
   body(class=['w-full h-full bg-gray-100 p-0 m-0'])
-    nav(class=['w-full h-16 bg-white shadow-lg flex flex-nowrap justify-end'])
+    nav(class=['w-full md:h-16 bg-white shadow-lg flex flex-wrap md:flex-nowrap justify-end'])
       if token
-        a(href="/product" class=['h-full p-2 flex items-center justify-center text-sm md:text-md md:font-semibold text-green mx-2 hover:bg-gray-200']) 
+        a(href="/product" class=['w-full md:w-auto md:h-full p-2 flex items-center justify-center text-sm md:text-md md:font-semibold text-green mx-2 hover:bg-gray-200']) 
           span Add Products
-        a(href="/categories" class=['h-full p-2 flex items-center justify-center text-sm md:text-md md:font-semibold text-green mx-2 hover:bg-gray-200']) 
+        a(href="/categories" class=['w-full md:w-auto md:h-full p-2 flex items-center justify-center text-sm md:text-md md:font-semibold text-green mx-2 hover:bg-gray-200']) 
           span Add categories
+        a(href="/allProducts" class=['w-full md:w-auto md:h-full p-2 flex items-center justify-center text-sm md:text-md md:font-semibold text-green mx-2 hover:bg-gray-200']) 
+          span Products
+        a(href="/orders" class=['w-full md:w-auto md:h-full p-2 flex items-center justify-center text-sm md:text-md md:font-semibold text-green mx-2 hover:bg-gray-200']) 
+          span Orders
+        a(href="/productCategories" class=['w-full md:w-auto md:h-full p-2 flex items-center justify-center text-sm md:text-md md:font-semibold text-green mx-2 hover:bg-gray-200']) 
+          span Categories
       else
-        a(href="/login" class=['h-full p-2 flex items-center justify-center text-sm md:text-md md:font-semibold text-green mx-2 hover:bg-gray-200']) 
+        a(href="/login" class=['w-full md:w-auto md:h-full p-2 flex items-center justify-center text-sm md:text-md md:font-semibold text-green mx-2 hover:bg-gray-200']) 
           span Login
     block content

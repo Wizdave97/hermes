@@ -1,32 +1,32 @@
 extends layout
 
 block content
-  div(class=['w-full bg-white justify-center mx-auto p-2 rounded-lg overflow-x-auto shadow-2xl sm:w-4/5 md:w-8/12 lg:w-5/12 flex flex-wrap'])
-    div(class=['w-full p-2 my-2 shadow-lg rounded-md flex flex-no-wrap justify-beween items-center'])
-        span(class=['flex-grow text-lg font-bold p-2 text-left']) Name
-        span(class=['text-lg font-bold mx-2 p-2']) Phone
-        span(class=['p-2 rounded-sm font-bold text-white mx-2']) Transaction Ref
-        span(class=['p-2 rounded-sm font-bold text-white mx-2']) Items
-        span(class=['p-2 rounded-sm font-bold text-white mx-2']) Address
-        span(class=['p-2 rounded-sm font-bold text-white mx-2']) Action
-    for order in orders
-      --var deleteOrder = '/deleteOrder?id='+order.id
-      div(class=['w-full p-2 my-2 shadow-lg rounded-md flex flex-no-wrap justify-beween items-center'])
-        span(class=['text-lg font-normal p-2 text-left mx-1']) #{order.fullname}
-        span(class=['text-lg font-normal p-2 text-left mx-1']) #{order.phone}
-        ul(class=['text-lg flex flex-wrap list-none font-normal p-2 text-left mx-1'])
-          for item in order.items
-            li(class=['w-full p-1 text-sm'])
-              span(class=['font-semibold']) #{item.name}
-              span(class=['font-normal mx-1'])
-                strong Quantity
-                span #{item.quantity} 
-        span(class=['text-lg font-normal p-2 text-left mx-1']) #{order.transaction_ref}
-        span(class=['text-lg font-normal p-2 text-left mx-1']) #{order.address}
-        a(class=['bg-red-600 p-2 rounded-sm font-bold text-white mx-2'] href=#{deleteOrder}) Delete
-    div(class=['w-full p-2 my-2 shadow-lg rounded-md flex flex-no-wrap justify-beween items-center'])
-      if previous
-        a(class=['bg-green-600 p-2 rounded-sm font-bold text-white mx-2'] href=#{previous} ) Back
-      if next 
-        a(class=['bg-green-600 p-2 rounded-sm font-bold text-white mx-2'] href=#{next} ) Next
-    
+  div(class=['w-full px-2 flex justify-center overflow-x-auto'])
+    table(class=['table-auto mx-auto p-2 shadow-2xl md:px-4 '])
+      thead
+        tr
+          th(class=['px-4 py-2']) Name
+          th(class=['px-4 py-2']) Phone
+          th(class=['px-4 py-2']) Transaction Ref4j 
+          th(class=['px-4 py-2']) Items
+          th(class=['px-4 py-2']) Address
+          th(class=['px-4 py-2']) Action
+      tbody
+        for order in orders
+          - var deleteOrder = '/deleteOrder?id='+order.id
+          tr
+            td(class=['border px-4 py-2']) #{order.fullname}
+            td(class=['border px-4 py-2']) #{order.phone}
+            td(class=['border px-4 py-2'])
+              ul(class=['text-lg flex flex-wrap list-none font-normal p-2 text-left mx-1'])
+                for item in order.items
+                  li(class=['w-full p-1 text-sm'])
+                    span(class=['font-semibold']) #{item.Product.product_name}
+                    span(class=['font-normal mx-1'])
+                      strong Quantity:
+                      span #{item.quantity} 
+            td(class=['border px-4 py-2']) #{order.transaction_ref}
+            td(class=['border px-4 py-2']) #{order.address}
+            td(class=['border px-4 py-2'])
+              a(class=['bg-red-600 p-2 rounded-sm font-bold text-white mx-2'] href=deleteOrder) Delete
+        

@@ -9,20 +9,22 @@ block content
         h2(class=['w-full p-2 mb-2 text-md font-bold text-red-800 text-center md:text-lg']) #{error}
       if success 
         h2(class=['w-full p-2 mb-2 text-md font-bold text-green-800 text-center md:text-lg']) #{success}
-      form(method='PUT' action="/product" class=['w-full flex flex-wrap items-center'] validate enctype="multipart/form-data")
-        div(class=['w-full mb-2'])
-          label(for="product_name" class=['w-full text-sm font-semibold text-gray-700 text-left']) Product Name
-          input(type="text" name="product_name" id="product_name" required class=['w-full p-2 my-1 border-2 border-gray-100 hover:shadow-inner rounded-md'])
-        div(class=['w-full mb-2'])
-          label(for="price" class=['w-full text-sm font-semibold text-gray-700 text-left']) Price
-          input(type="number" name="price" id="price" min="0" required class=['w-full p-2 my-1 border-2 border-gray-100 hover:shadow-inner rounded-md'])
-        div(class=['w-full mb-2'])
-          label(for="stock" class=['w-full text-sm font-semibold text-gray-700 text-left']) Stock
-          input(type="number" name="stock" id="stock" min="0" required class=['w-full p-2 my-1 border-2 border-gray-100 hover:shadow-inner rounded-md'])
-        div(class=['w-full mb-2'])
-          label(for="category" class=['w-full text-sm font-semibold text-gray-700 text-left']) Category
-          select(name="category" id="category" required class=['w-full p-2 my-1 border-2 border-gray-100 hover:shadow-inner rounded-md'])
-            for row in product.categories
-              option(value=row.id) #{row.category}
-        div(class=['w-full mb-2'])
-          button(type="submit" name="submit" id="submit" class=['w-full p-2 my-1 bg-indigo-500 text-white font-semibold hover:shadow-inner rounded-md']) Submit
+      if product
+        form(method='POST' action="/editProduct?id="+product.id class=['w-full flex flex-wrap items-center'] validate)
+          div(class=['w-full mb-2'])
+            label(for="product_name" class=['w-full text-sm font-semibold text-gray-700 text-left']) Product Name
+            input(type="text" name="product_name" id="product_name" value=product.product_name required class=['w-full p-2 my-1 border-2 border-gray-100 hover:shadow-inner rounded-md'])
+          div(class=['w-full mb-2'])
+            label(for="price" class=['w-full text-sm font-semibold text-gray-700 text-left']) Price
+            input(type="number" name="price" id="price" min="0" value=product.price required class=['w-full p-2 my-1 border-2 border-gray-100 hover:shadow-inner rounded-md'])
+          div(class=['w-full mb-2'])
+            label(for="stock" class=['w-full text-sm font-semibold text-gray-700 text-left']) Stock
+            input(type="number" name="stock" id="stock" min="0" value=product.stock required class=['w-full p-2 my-1 border-2 border-gray-100 hover:shadow-inner rounded-md'])
+          div(class=['w-full mb-2'])
+            label(for="category" class=['w-full text-sm font-semibold text-gray-700 text-left']) Category
+            select(name="category" id="category" value=product.category_id required class=['w-full p-2 my-1 border-2 border-gray-100 hover:shadow-inner rounded-md'])
+              if categories
+                for row in categories
+                  option(value=row.id) #{row.category}
+          div(class=['w-full mb-2'])
+            button(type="submit" name="submit" id="submit" class=['w-full p-2 my-1 bg-indigo-500 text-white font-semibold hover:shadow-inner rounded-md']) Submit

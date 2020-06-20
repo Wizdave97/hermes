@@ -1,21 +1,23 @@
 extends layout
 
 block content
-  div(class=['w-full bg-white justify-center mx-auto p-2 rounded-lg overflow-x-auto shadow-2xl sm:w-4/5 md:w-8/12 lg:w-5/12 flex flex-wrap'])
-    div(class=['w-full p-2 my-2 shadow-lg rounded-md flex flex-no-wrap justify-beween items-center'])
-        span(class=['flex-grow text-lg font-bold p-2 text-left']) Name
-        span(class=['text-lg font-bold mx-2 p-2']) Stock
-        span(class=['p-2 rounded-sm font-bold text-white mx-2']) Actions
-    for product in products
-      --var editRoute = '/editProduct?id='+product.id
-      --var deleteRoute = '/deleteProduct?id='+product.id
-      div(class=['w-full p-2 my-2 shadow-lg rounded-md flex flex-no-wrap justify-beween items-center'])
-        span(class=['flex-grow text-lg font-bold p-2 text-left']) #{product.product_name}
-        span(class=['text-lg font-bold mx-2 p-2']) #{stock}
-        a(class=['bg-green-600 p-2 rounded-sm font-bold text-white mx-2'] href=#{editRoute} ) Edit
-        a(class=['bg-red-600 p-2 rounded-sm font-bold text-white mx-2'] href=#{deleteRoute}) Delete
-    div(class=['w-full p-2 my-2 shadow-lg rounded-md flex flex-no-wrap justify-beween items-center'])
-      if previous
-        a(class=['bg-green-600 p-2 rounded-sm font-bold text-white mx-2'] href=#{previous} ) Back
-      if next 
-        a(class=['bg-green-600 p-2 rounded-sm font-bold text-white mx-2'] href=#{next} ) Next
+  div(class=['w-full px-2 flex justify-center overflow-x-auto'])
+    table(class=['table-auto mx-auto p-2  shadow-2xl md:px-4'])
+      thead
+        tr
+          th(class=['px-4 py-2']) Name
+          th(class=['px-4 py-2']) Stock
+          th(class=['px-4 py-2']) Actions
+      tbody
+        if error
+          tr
+            td #{error}
+        else
+          for product in products
+            - var editRoute = '/editProduct?id='+product.id
+            tr
+              td(class=['border px-4 py-2']) #{product.product_name}
+              td(class=['border px-4 py-2']) #{product.stock}
+              td(class=['border px-4 py-2']) #{product.price}
+              td(class=['border px-4 py-2'])
+                a(class=['bg-green-600 p-2 rounded-sm font-bold text-white mx-2'] href=editRoute ) Edit
