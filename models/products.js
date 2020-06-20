@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
     Products.hasMany(models.Cart, { foreignKey: 'product_id'});
     Products.hasMany(models.Items, { foreignKey: 'product_id'});
+    Products.hasMany(models.Notifications, {foreignKey: 'product_id'});
     Products.belongsTo(models.Categories, { foreignKey: 'category_id'});
   };
   return Products;

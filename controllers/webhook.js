@@ -28,8 +28,8 @@ module.exports = {
               else if (webhook_event.postback) {
                 lib.handlePostback(senderPsId, webhook_event.postback);
               }
-              else if (webhook_event.attachments) {
-                let attachmentUrl = webhook_event.attachments[0].payload.url;
+              else if (webhook_event.optin) {
+                lib.handleOptin(senderPsId, webhook_event.optin)
               }
             });
         

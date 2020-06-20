@@ -5,6 +5,7 @@
  */
 
 var app = require('../app');
+const workers = require('../lib/workers');
 var debug = require('debug')('ecommerce-bot:server');
 var http = require('http');
 
@@ -87,4 +88,5 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
+  workers.init();
 }
