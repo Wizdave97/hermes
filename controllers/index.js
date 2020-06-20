@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken');
 const { users, categories } = require('../lib/cache');
 const { fetchCart } = require('../lib/helpers');
 const { callSendAPI} = require('../lib/webhookHandlers');
+const client = require('twilio')(process.env.TWILIO_ASID, process.env.TWILIO_AUTH_TOKEN);
 const SECRET = process.env.SECRET;
 const USER_NAME = 'wizdave97@gmail.com';
 const PASSWORD = 'valerianspace';
@@ -208,6 +209,20 @@ const controllers = {
           sender_psid: req.body.sender_psid
         },transaction: t}).then(rows => {
           const itemRows = rows.map(row => {
+            models.Products.findAll({where: {
+              id: row.product_id
+            }}).then(products => {
+              if(products.length > 0) {
+                const stock = products[0].stock - row.quantity
+                models.Products.update({
+                  stock
+                }, {
+                  where: {
+                    id: row.product_id
+                  }
+                }).then((result) => {}).catch(err => { console.error(err)})
+              }
+            }).catch(err => {console.error(err)})
             return {order_id:completedOrder.id, product_id: row.product_id, quantity: row.quantity}
           })
           return models.Items.bulkCreate(itemRows, {transaction: t}).then(result => {
@@ -225,7 +240,7 @@ const controllers = {
             phone: req.body.phone, 
             email: req.body.email,
           }, { where: { user_psid: req.body.sender_psid}}).then((result)=>{
-            console.log(result)
+            
           }).catch(err => {
             console.error(err)
           })
@@ -237,7 +252,7 @@ const controllers = {
             email: req.body.email,
             user_psid: req.body.sender_psid
           }).then(result => {
-            console.log(result)
+            
           }).catch(err => {
             console.error(err)
           })
@@ -246,14 +261,17 @@ const controllers = {
         console.error(err)
       })
       res.status(200).send({status:200, msg:"Order completed successfully"});
+      //Send SMS alert with TWILIO
+      client.messages
+      .create({
+        body: `Your order has been completed, you will be contacted on your mobile number for delivery.\nYour Order Details are\nOrder number: ${completedOrder.order_number}\nTransaction_Ref: ${req.body.transaction_ref}\nfullname: ${req.body.fullname}\nPhone: ${req.body.phone}\nAddress: ${req.body.address}`,
+        from: '+12029461988',
+        to: `+${req.body.phone.replace('+','').trim()}`
+      })
+      .then(message => console.log(message.sid)).catch(err => {});
+      //Send Messenger Alert
       callSendAPI(req.body.sender_psid, 
-        {text: `Your order has been completed, you will be contacted on your mobile number for delivery.\n
-        Your Order Details are\n
-        Order number: ${completedOrder.order_number}\n
-        Transaction_Ref: ${req.body.transaction_ref}\n
-        fullname: ${req.body.fullname}\n
-        Phone: ${req.body.phone}\n
-        Address: ${req.body.address}`});
+        {text: `Your order has been completed, you will be contacted on your mobile number for delivery.\nYour Order Details are\nOrder number: ${completedOrder.order_number}\nTransaction_Ref: ${req.body.transaction_ref}\nfullname: ${req.body.fullname}\nPhone: ${req.body.phone}\nAddress: ${req.body.address}`});
     }).catch(err => {
       console.error(err);
       res.status(500).send({status:500, msg:'An error occured while creating the transaction, please contact us to get a refund'});
